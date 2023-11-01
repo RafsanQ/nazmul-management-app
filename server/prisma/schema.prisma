@@ -1,0 +1,54 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Employee {
+  id       Int    @id @default(autoincrement())
+  name     String
+  password String
+  email    String @unique
+  phone    String
+
+  tasks    Task[] @relation("Requested By")
+}
+
+model OfficeAssistant {
+  id       Int    @id @default(autoincrement())
+  name     String
+  password String
+  email    String @unique
+  phone    String
+
+  tasks Task[] @relation("Completed By")
+}
+
+model Task {
+  id Int @id @default(autoincrement())
+  text String
+  status String @default("Requested")
+  expense Int @default(0)
+
+  employee Employee @relation("Requested By", fields: [employeeId], references: [id])
+  employeeId Int
+
+  officeAssistant OfficeAssistant @relation("Completed By", fields: [officeAssistantId], references: [id])
+  officeAssistantId Int
+}
+
+
+// # Environment variables declared in this file are automatically made available to Prisma.
+// # See the documentation for more detail: https://pris.ly/d/prisma-schema#accessing-environment-variables-from-the-schema
+
+// # Prisma supports the native connection string format for PostgreSQL, MySQL, SQLite, SQL Server, MongoDB and CockroachDB.
+// # See the documentation for all the connection string options: https://pris.ly/d/connection-strings
+
+// DATABASE_URL="postgresql://postgres:9cd4c26428@localhost:5432/nazmul-management?schema=public"
+// PORT=3309
