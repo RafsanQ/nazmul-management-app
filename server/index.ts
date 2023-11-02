@@ -8,6 +8,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 import employeeRoutes from './routes/employee.routes'
+import officeAssistantRoutes from './routes/office-assistant.routes'
 
 const app: Application = express();
 app.use(express.json())
@@ -20,7 +21,8 @@ app.get('/', (req: Request, res: Response) => {
   res.send('Welcome to Express & TypeScript Server');
 });
 
-app.use('/api/employee', employeeRoutes)
+app.use('/api/employee', employeeRoutes);
+app.use('/api/office-assistant', officeAssistantRoutes);
 
 app.listen(port, () => {
   console.log(`Server is Fire at http://localhost:${port}`);

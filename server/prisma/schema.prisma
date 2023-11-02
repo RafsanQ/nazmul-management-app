@@ -17,7 +17,7 @@ model Employee {
   email    String @unique
   phone    String
 
-  tasks    Task[] @relation("Requested By")
+  tasks Task[] @relation("Requested By")
 }
 
 model OfficeAssistant {
@@ -31,14 +31,14 @@ model OfficeAssistant {
 }
 
 model Task {
-  id Int @id @default(autoincrement())
-  text String
-  status String @default("Requested")
-  expense Int @default(0)
+  id      Int    @id @default(autoincrement())
+  text    String
+  status  String @default("Requested")
+  expense Int    @default(0)
 
-  employee Employee @relation("Requested By", fields: [employeeId], references: [id])
+  employee   Employee @relation("Requested By", fields: [employeeId], references: [id])
   employeeId Int
 
-  officeAssistant OfficeAssistant @relation("Completed By", fields: [officeAssistantId], references: [id])
+  officeAssistant   OfficeAssistant @relation("Completed By", fields: [officeAssistantId], references: [id])
   officeAssistantId Int
 }
