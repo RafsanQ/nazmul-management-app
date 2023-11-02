@@ -17,9 +17,11 @@ export const varifyToken = async (req: Request, res: Response, next: NextFunctio
 
         const verified = jwt.verify(token, String(process.env.SUPER_SECRET_KEY));
         
+        if(!verified) return res.status(403).json("Invalid Token");
+
         next();
     }catch(error){
-        res.status(404).json({ error });
+        res.status(403).json({ error });
     }
 
 }
