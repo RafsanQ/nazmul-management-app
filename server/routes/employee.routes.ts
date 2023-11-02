@@ -1,13 +1,11 @@
 import express from "express";
-import { register } from "../controllers/employee.controllers"
+import { register, getEmployeeDetailsByEmail, getEmployeeDetailsById } from "../controllers/employee.controllers"
 
 const router = express.Router();
 
-router.get('/employee/:id', (req, res) => {
-    const id:number = Number(req.params.id);
-    console.log(id);
-    res.json({id: id});
-})
+router.get('/employee/:id', getEmployeeDetailsById)
+
+router.get("/employee-details/:email", getEmployeeDetailsByEmail)
 
 router.post('/new-employee', register);
 
