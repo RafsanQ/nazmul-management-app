@@ -1,14 +1,16 @@
 
 import express, { Request, Response , Application } from 'express';
 
-import dotenv from 'dotenv';
+import employeeRoutes from './routes/employee.routes'
+import officeAssistantRoutes from './routes/office-assistant.routes'
+import taskRoutes from './routes/task.routes'
 
 
 //For env File 
+import dotenv from 'dotenv';
 dotenv.config();
 
-import employeeRoutes from './routes/employee.routes'
-import officeAssistantRoutes from './routes/office-assistant.routes'
+
 
 const app: Application = express();
 app.use(express.json())
@@ -23,7 +25,8 @@ app.get('/', (req: Request, res: Response) => {
 
 app.use('/api/employee', employeeRoutes);
 app.use('/api/office-assistant', officeAssistantRoutes);
+app.use('/api/task', taskRoutes);
 
 app.listen(port, () => {
-  console.log(`Server is Fire at http://localhost:${port}`);
+  console.log(`Server is running at http://localhost:${port}`);
 });

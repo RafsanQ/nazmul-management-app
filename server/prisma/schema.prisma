@@ -31,14 +31,16 @@ model OfficeAssistant {
 }
 
 model Task {
-  id      Int    @id @default(autoincrement())
-  text    String
-  status  String @default("Requested")
-  expense Int    @default(0)
+  id        Int      @id @default(autoincrement())
+  text      String
+  status    String   @default("Requested")
+  dueAmount Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   employee   Employee @relation("Requested By", fields: [employeeId], references: [id])
   employeeId Int
 
-  officeAssistant   OfficeAssistant @relation("Completed By", fields: [officeAssistantId], references: [id])
-  officeAssistantId Int
+  officeAssistant   OfficeAssistant? @relation("Completed By", fields: [officeAssistantId], references: [id])
+  officeAssistantId Int?
 }

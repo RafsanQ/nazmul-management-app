@@ -89,7 +89,6 @@ export const getEmployeeDetailsByEmail = async (req:Request, res: Response) => {
         res.status(500).json(error);
         throw error;
     }
-
 }
 
 
