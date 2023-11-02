@@ -20,7 +20,7 @@ app.get('/', (req: Request, res: Response) => {
   res.send('Welcome to Express & TypeScript Server');
 });
 
-app.use('/api', employeeRoutes)
+app.use('/api/employee', employeeRoutes)
 
 app.listen(port, () => {
   console.log(`Server is Fire at http://localhost:${port}`);

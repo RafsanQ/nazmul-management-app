@@ -1,12 +1,14 @@
 import express from "express";
-import { register, getEmployeeDetailsByEmail, getEmployeeDetailsById } from "../controllers/employee.controllers"
+import { register, getEmployeeDetailsByEmail, getEmployeeDetailsById, login } from "../controllers/employee.controllers"
 
 const router = express.Router();
 
-router.get('/employee/:id', getEmployeeDetailsById)
+router.get('/:id', getEmployeeDetailsById)
 
-router.get("/employee-details/:email", getEmployeeDetailsByEmail)
+router.get("/by-email/:email", getEmployeeDetailsByEmail)
 
 router.post('/new-employee', register);
+
+router.post('/login', login);
 
 export default router;
