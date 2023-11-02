@@ -41,3 +41,29 @@ export const createNewTask = async (req:Request, res:Response) => {
         throw error;
     }
 }
+
+
+export const updateTaskOnCompletion = async (req:Request, res: Response) => {
+    const taskId: number = Number(req.params.id);
+    const dueAmount: number = Number(req.body.dueAmount);
+    const officeAssistantId: number = Number(req.body.officeAssistantId);
+    try{
+        const newTask = await prisma.task.update({
+            where: {
+                id: taskId
+            },
+            data: {
+                dueAmount: dueAmount,
+                status: dueAmount > 0 ? "Pending Payment" : "Completed",
+                officeAssistantId: officeAssistantId
+            }
+        })
+
+        return res.status(201).json(newTask);
+
+    }catch(error){
+        res.status(500).json(error);
+        throw error;
+    }
+    
+}
