@@ -1,12 +1,12 @@
 import express from "express";
 import { register, getEmployeeDetailsByEmail, getEmployeeDetailsById, login } from "../controllers/employee.controllers"
-import { varifyToken } from "../middleware/auth";
+import { verifyToken } from "../middleware/auth";
 
 const router = express.Router();
 
-router.get('/:id', varifyToken, getEmployeeDetailsById)
+router.get('/:id', verifyToken, getEmployeeDetailsById)
 
-router.get("/by-email/:email", varifyToken, getEmployeeDetailsByEmail)
+router.get("/by-email/:email", verifyToken, getEmployeeDetailsByEmail)
 
 router.post('/new-employee', register);
 
