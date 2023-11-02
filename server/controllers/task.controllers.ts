@@ -12,6 +12,21 @@ export const getAllTasks = async (req:Request, res:Response) => {
     }
 }
 
+export const getTaskById = async (req:Request, res:Response) => {
+    const id: number = Number(req.params.id);
+    try{
+        const tasks = await prisma.task.findUnique({
+            where: {
+                id: id
+            }
+        });
+        return res.status(200).json(tasks);
+    }catch(error){
+        res.status(500).json(error);
+        throw error;
+    }
+}
+
 export const createNewTask = async (req:Request, res:Response) => {
     const { body } = req;
     try{
