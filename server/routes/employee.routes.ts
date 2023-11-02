@@ -1,4 +1,5 @@
 import express from "express";
+import { register } from "../controllers/employee.controllers"
 
 const router = express.Router();
 
@@ -7,5 +8,7 @@ router.get('/employee/:id', (req, res) => {
     console.log(id);
     res.json({id: id});
 })
+
+router.post('/new-employee', register);
 
 export default router;
