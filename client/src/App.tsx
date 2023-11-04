@@ -2,8 +2,9 @@
 import { RouterProvider } from "react-router-dom";
 import './App.css'
 
-import router from './routes'
-import Navbar from "./components/navbar";
+import router from "./routes"
+import Navbar from "./components/Navbar";
+
 
 function App() {
 
