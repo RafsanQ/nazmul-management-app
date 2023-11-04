@@ -7,10 +7,11 @@
   color: rgba(12, 8, 8, 0.87);
   background-color: white;
 
-  background-image: url('./assets/background.jpeg');
+  /* background-image: url('./assets/background.jpeg'); */
   background-repeat: no-repeat;
   background-position: right bottom;
-  background-size: 25%;
+  background-size: 22%;
+  
 
   width: 100vw;
   height: 100vh;
