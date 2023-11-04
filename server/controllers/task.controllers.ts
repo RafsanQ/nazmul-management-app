@@ -4,7 +4,12 @@ const prisma = new PrismaClient()
 
 export const getAllTasks = async (req:Request, res:Response) => {
     try{
-        const tasks = await prisma.task.findMany();
+        const tasks = await prisma.task.findMany({
+            include: {
+                employee: true,
+                officeAssistant: true
+            }
+        });
         return res.status(200).json(tasks);
     }catch(error){
         res.status(500).json(error);
@@ -35,6 +40,29 @@ export const createNewTask = async (req:Request, res:Response) => {
         })
 
         return res.status(201).json(newTask);
+
+    }catch(error){
+        res.status(500).json(error);
+        throw error;
+    }
+}
+
+export const getTasksByEmployee = async (req:Request, res: Response) => {
+    const employeeEmail: string = String(req.params.email);
+    try{
+        const tasks = await prisma.task.findMany({
+            where: {
+                employee: {
+                    email: employeeEmail
+                }
+            },
+            include: {
+                employee: true,
+                officeAssistant: true
+            },
+        })
+
+        return res.status(200).json(tasks);
 
     }catch(error){
         res.status(500).json(error);

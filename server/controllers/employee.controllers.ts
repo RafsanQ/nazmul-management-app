@@ -20,7 +20,7 @@ export const register = async (req: Request, res: Response) => {
         const hashedPassword = await bcrypt.hash(body.password, salt);
 
         if(existingUser){
-            return res.status(400).send("Email already in use");
+            return res.status(400).send("Employee with that email already exists");
         }
 
         const newEmployee = await prisma.employee.create({

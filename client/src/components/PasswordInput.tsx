@@ -2,6 +2,7 @@ import { Button, Input, InputGroup, InputRightElement } from "@chakra-ui/react";
 import { useState } from "react";
 
 interface Iprops {
+    name: string,
     value: string,
     onChange(e: React.FormEvent<HTMLInputElement>): void
 }
@@ -13,7 +14,8 @@ function PasswordInput(props: Iprops) {
 
     return (
         <InputGroup size="md" >
-            <Input
+            <Input 
+                name={props.name}
                 pr="4.5rem"
                 variant='flushed'
                 bg="white"
@@ -23,8 +25,9 @@ function PasswordInput(props: Iprops) {
                 padding={4}
                 value={props.value}
                 onChange={props.onChange}
+                marginY={2}
             />
-            <InputRightElement width="4.5rem">
+            <InputRightElement width="4.5rem" marginY="1ex">
                 <Button h="1.75rem" size="sm" onClick={handleClick}>
                     {show ? "Hide" : "Show"}
                 </Button>
