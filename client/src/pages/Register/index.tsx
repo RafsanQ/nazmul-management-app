@@ -1,6 +1,5 @@
-import React from 'react';
 
-function index() {
+function Index() {
     return (
         <div>
             Register
@@ -8,4 +7,4 @@ function index() {
     );
 }
 
-export default index;
+export default Index;

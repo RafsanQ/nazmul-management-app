@@ -1,6 +1,6 @@
 
 import express, { Request, Response , Application } from 'express';
-
+import cors from 'cors';
 import employeeRoutes from './routes/employee.routes'
 import officeAssistantRoutes from './routes/office-assistant.routes'
 import taskRoutes from './routes/task.routes'
@@ -16,6 +16,8 @@ const app: Application = express();
 app.use(express.json())
 app.use(express.urlencoded({limit: "1024mb", extended: true}));
 
+// Allow cross origin policy
+app.use(cors());
 
 const port = process.env.PORT || 8000;
 
