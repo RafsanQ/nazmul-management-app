@@ -42,6 +42,25 @@ export const createNewTask = async (req:Request, res:Response) => {
     }
 }
 
+export const getTasksByEmployee = async (req:Request, res: Response) => {
+    const employeeEmail: string = String(req.params.email);
+    try{
+        const tasks = await prisma.task.findMany({
+            where: {
+                employee: {
+                    email: employeeEmail
+                }
+            },
+        })
+
+        return res.status(200).json(tasks);
+
+    }catch(error){
+        res.status(500).json(error);
+        throw error;
+    }
+}
+
 
 export const updateTaskOnCompletion = async (req:Request, res: Response) => {
     const taskId: number = Number(req.params.id);
