@@ -22,6 +22,7 @@ function Navbar() {
 
     const isSignedIn = userEmail == '' || userName == '' || token == '' || userType == '' ? false : true;
 
+    
 
     const handleLogOut = () => {
         dispatch(
@@ -35,6 +36,10 @@ function Navbar() {
         })
     }
 
+    const handleNavigation = () => {
+        window.location.assign('/new-task');
+    }
+
     return (
         <Box className='navbar' bg='slategray ' color='gainsboro ' h='7vh' fontFamily='Arial' fontSize='xl' fontWeight='bold' letterSpacing='0.1em' paddingY="1ex" paddingX="2%">
             <a href='/'>Nazmul Management System</a>
@@ -46,7 +51,12 @@ function Navbar() {
                             {userName}
                         </MenuButton>
                         <MenuList>
-                            <MenuItem onClick={handleLogOut}>Create New Task</MenuItem>
+                            {
+                                userType !== 'office-assistant' && (
+                                    <MenuItem onClick={handleNavigation} >Create New Task</MenuItem>
+                                )
+                            }
+                            
                             <MenuItem onClick={handleLogOut}>Log Out</MenuItem>
                         </MenuList>
                     </Menu>

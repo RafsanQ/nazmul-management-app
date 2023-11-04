@@ -11,6 +11,7 @@ import {
   Td,
   TableContainer,
   useToast,
+  Center,
 } from "@chakra-ui/react";
 import axios, { AxiosResponse } from "axios";
 import { useEffect, useState } from "react";
@@ -79,7 +80,7 @@ function Index() {
   }, []);
 
   return (
-    <div>
+    <Center marginY={10} marginX='10%' bg='gray.200' borderRadius='5px' paddingX='1%' paddingY='2%' display='flex' flexDir='column'>
       <TableContainer>
         <Table variant="simple">
           <Thead>
@@ -110,7 +111,7 @@ function Index() {
           </Tbody>
         </Table>
       </TableContainer>
-    </div>
+    </Center>
   );
 }
 
