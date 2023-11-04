@@ -1,114 +1,110 @@
-import { 
-    FormControl,
+import {
     Button,
     Center,
     Text,
-    Radio,
-    RadioGroup,
-    Stack,
-    useToast
+    useToast,
 } from "@chakra-ui/react";
 import FieldInput from "../../components/FieldInput";
-import PasswordInput from "../../components/PasswordInput";
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
-
+import type { RootState } from "../../store";
+import { createNewTask, getIdByEmail } from "./services";
+import { useSelector } from "react-redux";
 
 function Index() {
-
-    const [employeeData, setEmployeeData] = useState({
-        name: '',
-        email: '',
-        phone: '',
-        password: '',
-        repeatPassword: ''
-    });
-    const [userType, setUserType] = useState('employee');
+    const [instruction, setInstruction] = useState<string>("");
     const toast = useToast();
     const navigate = useNavigate();
 
-    const handleEmployeeDataChange = (e: React.ChangeEvent<HTMLInputElement>) => setEmployeeData({
-        ...employeeData,
-        [e.target.name]: e.target.value
-    });
+    const handleInstructionChange = (e: React.ChangeEvent<HTMLInputElement>) =>
+        setInstruction(e.target.value);
+    const userEmail: string = useSelector((state: RootState) => state.email);
+    const userType: string = useSelector((state: RootState) => state.userType);
+    const token: string = useSelector((state: RootState) => state.token);
 
+    if(userEmail == '' || token == ''){
+        navigate('/login');
+    }
 
-    
-    const handleRegister = async () => {
-
-        if(employeeData.email === '' || employeeData.password === '' || employeeData.name === '' || employeeData.phone === '') {
+    const handleCreateNewTask = async () => {
+        if (instruction === "") {
             toast({
-                title: "Please fill out all of the required fields",
-                status: 'error',
+                title: "Please enter a valid instruction",
+                status: "error",
                 duration: 3000,
-                isClosable: true
-            })
+                isClosable: true,
+            });
             return;
         }
 
-        if(employeeData.password !== employeeData.repeatPassword) {
+        try {
+            const employeeId: number = await getIdByEmail(userEmail, userType, token);
+            console.log(token);
+            await createNewTask(employeeId, token, instruction);
             toast({
-                title: "Passwords do not match",
-                status: 'error',
+                title: "Task posted successfully",
+                status: "success",
                 duration: 3000,
-                isClosable: true
-            })
-            return;
-        }
-        
-        try{
-            await registerApi(employeeData.email, employeeData.password, userType, employeeData.phone, employeeData.name);
-
-            toast({
-                title: "Employee Registered Successfully",
-                status: 'success',
-                duration: 3000,
-                isClosable: true
-            })
+                isClosable: true, 
+            });
+            navigate('/');
             
-            navigate('/login');
-
-        }catch(error){
-            if(axios.isAxiosError(error) && error.response){
+        } catch (error) {
+            if (axios.isAxiosError(error) && error.response) {
                 const errorMessage = error.response.data;
+                console.log(error.response);
                 toast({
                     title: errorMessage,
-                    status: 'error',
+                    status: "error",
                     duration: 3000,
-                    isClosable: true
-                })
-            }
-            else{
+                    isClosable: true,
+                });
+            } else {
                 throw error;
             }
         }
-    }
-
+    };
 
     return (
-        <Center marginY={20} marginX='30%' bg='gray.200' borderRadius='5px' paddingX={20} paddingTop='2%' paddingBottom='3%' display='flex' flexDir='column'>
-            <FormControl isRequired >
-                <Text color='slategray' fontWeight='bold' fontFamily='Arial' fontSize='3xl' marginY={5}>Register a New Employee</Text>
-                <FieldInput text='Name' name='name' type='text' value={employeeData.name} onChange={handleEmployeeDataChange} />
-                <FieldInput text='Email' name='email' type='email' value={employeeData.email} onChange={handleEmployeeDataChange} />
-                <FieldInput text='Phone Number' name='phone' type='number' value={employeeData.phone} onChange={handleEmployeeDataChange} />
-                
-                <PasswordInput name='password' value={employeeData.password} onChange={handleEmployeeDataChange} />
-                <PasswordInput name='repeatPassword' value={employeeData.repeatPassword} onChange={handleEmployeeDataChange} />
-                <br />
-                <RadioGroup onChange={setUserType} value={userType}>
-                    <Stack direction='row'>
-                        <Radio value='employee'>Regular Employee</Radio>
-                        <br />
-                        <Radio value='office-assistant'>Office Assistant</Radio>
-                    </Stack>
-                </RadioGroup>
-                <Button colorScheme='blue' marginTop='2em' marginBottom='1em' onClick={handleRegister}>Register</Button>
-                <Text>Already have an account? <Link className="link" to='/login'>Sign in</Link> instead</Text>
-            </FormControl>
+        <Center
+            marginY={20}
+            marginX="30%"
+            bg="gray.200"
+            borderRadius="5px"
+            paddingX={20}
+            paddingTop="2%"
+            paddingBottom="3%"
+            display="flex"
+            flexDir="column"
+        >
+            <Text
+                color="slategray"
+                fontWeight="bold"
+                fontFamily="Arial"
+                fontSize="3xl"
+                marginY={5}
+            >
+                Create a New Task
+            </Text>
+            <FieldInput
+                text="Instruction"
+                name="instruction"
+                type="text"
+                value={instruction}
+                onChange={handleInstructionChange}
+            />
+
+            <Button
+                colorScheme="blue"
+                marginTop="2em"
+                marginBottom="1em"
+                onClick={handleCreateNewTask}
+            >
+                Request
+            </Button>
         </Center>
     );
 }
 
-export default Index
+export default Index;
