@@ -15,6 +15,7 @@ import PasswordInput from "../../components/PasswordInput";
 import { loginApi } from "./services";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 
 function Index() {
@@ -69,14 +70,22 @@ function Index() {
             
             navigate('/');
 
-        }catch(error: AxiosError | Error){
-            const errorMessage = error.response.data;
-            toast({
-                title: errorMessage,
-                status: 'error',
-                duration: 3000,
-                isClosable: true
-            })
+        }catch(error){
+            
+
+            if(axios.isAxiosError(error) && error.response){
+                const errorMessage = error.response.data;
+                toast({
+                    title: errorMessage,
+                    status: 'error',
+                    duration: 3000,
+                    isClosable: true
+                })
+            }
+            else{
+                throw error;
+            }
+            
         }
         
         
@@ -104,4 +113,4 @@ function Index() {
     );
 }
 
-export default Index;
+export default Index
