@@ -7,5 +7,5 @@ export const login = async (email: string, password: string, userType: string) =
         "password": password
     })
 
-    return response.data;
+    return response;
 }
