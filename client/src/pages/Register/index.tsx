@@ -8,12 +8,10 @@ import {
     Stack,
     useToast
 } from "@chakra-ui/react";
-import { useSelector } from 'react-redux'
 import FieldInput from "../../components/FieldInput";
 import PasswordInput from "../../components/PasswordInput";
 import { registerApi } from "./services";
 import { useState } from "react";
-import type { RootState } from '../../store'
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
@@ -86,14 +84,6 @@ function Index() {
                 throw error;
             }
         }
-    }
-    
-    const userEmail: string = useSelector((state: RootState) => state.email);
-    const userToken: string = useSelector((state: RootState) => state.token);
-
-    if(userEmail != '' && userToken != ''){
-        console.log(`User email: ${userEmail} and token: ${userToken}`);
-        navigate('/');
     }
 
 

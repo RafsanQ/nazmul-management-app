@@ -23,9 +23,22 @@
   -webkit-text-size-adjust: 100%;
 }
 
+.logOutMenu{
+  float: right;
+}
+
+.logOutMenu button{
+  color: black;
+  background-color: white;
+  letter-spacing: 0.25px;
+  font-weight: 100;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+
+
 .link{
   color: blue;
-  
 }
 
 .link:hover{

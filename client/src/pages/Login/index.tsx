@@ -30,8 +30,7 @@ function Index() {
     const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value);
     const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value);
     
-    const isError = email === '' || password === ''
-
+    const isError = email === '' || password === '';
 
 
     const handleLogIn = async () => {

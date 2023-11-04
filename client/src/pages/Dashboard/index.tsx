@@ -12,10 +12,10 @@ function Index() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  if(!userEmail && !token){
+
+  if(userEmail == '' && token == ''){
     navigate('/login');
   }
-
 
   const handleLogOut = () => {
       dispatch(
