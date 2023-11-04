@@ -4,7 +4,12 @@ const prisma = new PrismaClient()
 
 export const getAllTasks = async (req:Request, res:Response) => {
     try{
-        const tasks = await prisma.task.findMany();
+        const tasks = await prisma.task.findMany({
+            include: {
+                employee: true,
+                officeAssistant: true
+            }
+        });
         return res.status(200).json(tasks);
     }catch(error){
         res.status(500).json(error);

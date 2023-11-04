@@ -1,7 +1,7 @@
 import axios from "axios"
 
 export const getAllTasksApi = async (token: string) => {
-    const response = await axios.post('http://localhost:3309/api/task', {
+    const response = await axios.get('http://localhost:3309/api/task', {
         headers: {
             Authorization: 'Bearer ' + token
         }
