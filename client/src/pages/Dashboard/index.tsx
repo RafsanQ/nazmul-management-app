@@ -1,9 +1,11 @@
 import { useSelector } from "react-redux";
+import type { RootState } from '../../store'
+
 
 function Index() {
-  const userEmail: string = useSelector((state) => state.email);
-  const token: string = useSelector((state) => state.token);
-  const userType: string = useSelector((state) => state.userType);
+  const userEmail: string = useSelector((state: RootState) => state.email);
+  const token: string = useSelector((state: RootState) => state.token);
+  const userType: string = useSelector((state: RootState) => state.userType);
 
 
   return (
