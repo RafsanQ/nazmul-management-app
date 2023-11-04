@@ -6,6 +6,7 @@ import { logout } from "../../features/auth";
 
 function Index() {
   const userEmail: string = useSelector((state: RootState) => state.email);
+  const userName: string = useSelector((state: RootState) => state.name);
   const token: string = useSelector((state: RootState) => state.token);
   const userType: string = useSelector((state: RootState) => state.userType);
   const dispatch = useDispatch();
@@ -25,7 +26,7 @@ function Index() {
   return (
     
     <div>
-      Dash board for { userEmail } and token { token }. The user type is { userType }.
+      Dash board for {userName}, email: { userEmail } and token { token }. The user type is { userType }.
       <button onClick={handleLogOut}>Log Out</button>
     </div>
   )

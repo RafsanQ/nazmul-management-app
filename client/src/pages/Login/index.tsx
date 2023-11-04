@@ -14,7 +14,7 @@ import FieldInput from "../../components/FieldInput";
 import PasswordInput from "../../components/PasswordInput";
 import { loginApi } from "./services";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 
@@ -43,15 +43,25 @@ function Index() {
                 duration: 3000,
                 isClosable: true
             })
-            return
+            return;
         }
-        
         
         try{
             const response = await loginApi(email, password, userType);
 
-            const employeeEmail: string = response.data.employee.email;
             const employeeToken: string = response.data.token;
+
+            let employeeName: string;
+            let employeeEmail: string;
+            if(userType === 'office-assistant'){
+                employeeName = response.data.officeAssistant.name;
+                employeeEmail = response.data.officeAssistant.email;
+            }
+            else{
+                employeeName = response.data.employee.name;
+                employeeEmail = response.data.employee.email;
+            }
+            
 
             toast({
                 title: "Signed in successfully",
@@ -62,6 +72,7 @@ function Index() {
             
             dispatch(
                 login({
+                    name: employeeName,
                     email: employeeEmail,
                     token: employeeToken,
                     userType: userType
@@ -89,11 +100,11 @@ function Index() {
 
 
     return (
-        <Center marginY={20} marginX='30%' bg='gray.200' borderRadius='5px' padding={20} display='flex' flexDir='column'>
+        <Center marginY={20} marginX='30%' bg='gray.200' borderRadius='5px' paddingX='5%' paddingY='4%' display='flex' flexDir='column'>
             <FormControl isInvalid={isError} isRequired >
                 <Text color='slategray' fontWeight='bold' fontFamily='Arial' fontSize='3xl' marginY={5}>Log In</Text>
-                <FieldInput text='Email' type='email' value={email} onChange={handleEmailChange} />
-                <PasswordInput value={password} onChange={handlePasswordChange} />
+                <FieldInput name="email" text='Email' type='email' value={email} onChange={handleEmailChange} />
+                <PasswordInput name="password" value={password} onChange={handlePasswordChange} />
                 <br />
                 <RadioGroup onChange={setUserType} value={userType}>
                     <Stack direction='row'>
@@ -102,7 +113,9 @@ function Index() {
                         <Radio value='office-assistant'>Office Assistant</Radio>
                     </Stack>
                 </RadioGroup>
-                <Button colorScheme='blue' marginTop='2em' onClick={handleLogIn}>Log In</Button>
+                <Button colorScheme='blue' marginTop='2em' marginBottom='1em' onClick={handleLogIn}>Log In</Button>
+                <Text>New here?  <Link className="link" to='/register'> Create a new account now</Link></Text>
+
             </FormControl>
         </Center>
     );
