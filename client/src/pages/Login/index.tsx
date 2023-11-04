@@ -71,8 +71,6 @@ function Index() {
             navigate('/');
 
         }catch(error){
-            
-
             if(axios.isAxiosError(error) && error.response){
                 const errorMessage = error.response.data;
                 toast({
@@ -85,10 +83,7 @@ function Index() {
             else{
                 throw error;
             }
-            
         }
-        
-        
     }
     
 
