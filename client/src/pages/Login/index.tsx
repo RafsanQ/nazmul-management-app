@@ -8,10 +8,11 @@ import {
     Stack,
     useToast
 } from "@chakra-ui/react";
-import AxiosError from 'axios-error';
+import { useDispatch } from 'react-redux'
+import { login } from '../../features/auth'
 import FieldInput from "../../components/FieldInput";
 import PasswordInput from "../../components/PasswordInput";
-import { login } from "./services";
+import { loginApi } from "./services";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -23,9 +24,10 @@ function Index() {
     const [userType, setUserType] = useState('employee');
     const toast = useToast();
     const navigate = useNavigate();
+    const dispatch = useDispatch()
 
-    const handleEmailChange = (e) => setEmail(e.target.value);
-    const handlePasswordChange = (e) => setPassword(e.target.value);
+    const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value);
+    const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value);
     
     const isError = email === '' || password === ''
 
@@ -45,11 +47,10 @@ function Index() {
         
         
         try{
-            const response = await login(email, password, userType);
+            const response = await loginApi(email, password, userType);
 
-            const employeeId: number = response.data.employee.id;
-            const employeeName: string = response.data.employee.name
-            const employeeEmail: string = response.data.employee.email
+            const employeeEmail: string = response.data.employee.email;
+            const employeeToken: string = response.data.token;
 
             toast({
                 title: "Signed in successfully",
@@ -57,9 +58,18 @@ function Index() {
                 duration: 3000,
                 isClosable: true
             })
+            
+            dispatch(
+                login({
+                    email: employeeEmail,
+                    token: employeeToken,
+                    userType: userType
+                })
+            );
+            
             navigate('/');
 
-        }catch(error: AxiosError){
+        }catch(error: AxiosError | Error){
             const errorMessage = error.response.data;
             toast({
                 title: errorMessage,
