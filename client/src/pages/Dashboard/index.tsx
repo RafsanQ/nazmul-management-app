@@ -1,70 +1,117 @@
 import { useSelector } from "react-redux";
-import type { RootState } from '../../store'
+import type { RootState } from "../../store";
 import { useNavigate } from "react-router-dom";
+import { getAllTasksApi, getTasksBySpecificEmployeeApi } from "./services";
 import {
   Table,
   Thead,
   Tbody,
-  Tfoot,
   Tr,
   Th,
   Td,
   TableContainer,
-} from '@chakra-ui/react'
-
+  useToast,
+} from "@chakra-ui/react";
+import axios, { AxiosResponse } from "axios";
+import { useEffect, useState } from "react";
 
 function Index() {
   const userEmail: string = useSelector((state: RootState) => state.email);
   const token: string = useSelector((state: RootState) => state.token);
-  // const userType: string = useSelector((state: RootState) => state.userType);
+  const userType: string = useSelector((state: RootState) => state.userType);
   const navigate = useNavigate();
+  const toast = useToast();
 
-
-  if(userEmail == '' && token == ''){
-    navigate('/login');
+  if (userEmail == "" && token == "") {
+    navigate("/login");
   }
 
+  interface IEmployee {
+    id: number;
+    name: string;
+    email: string;
+    phone: string;
+  }
+
+  interface Idata {
+    id: number;
+    text: string;
+    dueAmount: number;
+    status: string;
+    employee: IEmployee;
+    officeAssistant: IEmployee;
+    createdAt: string;
+    updatedAt: string;
+  }
+
+  const [dataToShow, setDataToShow] = useState<Idata[]>([]);
+
+  const fetchTasks = async () => {
+    try {
+      let response: AxiosResponse;
+      if (userType == "employee") {
+        response = await getTasksBySpecificEmployeeApi(
+          userEmail,
+          token
+        );
+      } else {
+        response = await getAllTasksApi(token);
+      }
+      setDataToShow(response.data);
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.message) {
+        toast({
+          title: "Error fetching data",
+          status: "error",
+          description: error.message,
+          duration: 3000,
+          isClosable: true,
+        });
+      } else {
+        throw error;
+      }
+    }
+  };
+
+  useEffect(() => {
+    fetchTasks();
+    console.log(dataToShow);
+  }, []);
 
   return (
-    
     <div>
       <TableContainer>
-        <Table variant='simple'>
+        <Table variant="simple">
           <Thead>
             <Tr>
-              <Th>To convert</Th>
-              <Th>into</Th>
-              <Th isNumeric>multiply by</Th>
+              <Th>ID</Th>
+              <Th>Instruction</Th>
+              <Th>Due Amount</Th>
+              <Th>Status</Th>
+              <Th>Assigned By</Th>
+              <Th>Assigned On</Th>
+              <Th>Completed On</Th>
+              <Th></Th>
             </Tr>
           </Thead>
           <Tbody>
-            <Tr>
-              <Td>inches</Td>
-              <Td>millimetres (mm)</Td>
-              <Td isNumeric>25.4</Td>
-            </Tr>
-            <Tr>
-              <Td>feet</Td>
-              <Td>centimetres (cm)</Td>
-              <Td isNumeric>30.48</Td>
-            </Tr>
-            <Tr>
-              <Td>yards</Td>
-              <Td>metres (m)</Td>
-              <Td isNumeric>0.91444</Td>
-            </Tr>
+            {dataToShow.map((task) => (
+              <Tr key={task.id}>
+                <Td>{task.id}</Td>
+                <Td>{task.text}</Td>
+                <Td>{task.dueAmount}</Td>
+                <Td>{task.status}</Td>
+                <Td>{task.employee.name}</Td>
+                <Td>{task.createdAt}</Td>
+                <Td>{task.updatedAt}</Td>
+                <Td>Actions</Td>
+              </Tr>
+            ))}
           </Tbody>
-          <Tfoot>
-            <Tr>
-              <Th>To convert</Th>
-              <Th>into</Th>
-              <Th isNumeric>multiply by</Th>
-            </Tr>
-          </Tfoot>
         </Table>
-    </TableContainer>
+      </TableContainer>
     </div>
-  )
+  );
 }
 
 export default Index;

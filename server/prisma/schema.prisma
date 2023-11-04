@@ -35,8 +35,8 @@ model Task {
   text      String
   status    String   @default("Requested")
   dueAmount Int      @default(0)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now()) @db.Date
+  updatedAt DateTime @updatedAt @db.Date
 
   employee   Employee @relation("Requested By", fields: [employeeId], references: [id])
   employeeId Int

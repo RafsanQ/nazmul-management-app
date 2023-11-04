@@ -51,6 +51,10 @@ export const getTasksByEmployee = async (req:Request, res: Response) => {
                     email: employeeEmail
                 }
             },
+            include: {
+                employee: true,
+                officeAssistant: true
+            },
         })
 
         return res.status(200).json(tasks);

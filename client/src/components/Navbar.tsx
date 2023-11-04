@@ -46,6 +46,7 @@ function Navbar() {
                             {userName}
                         </MenuButton>
                         <MenuList>
+                            <MenuItem onClick={handleLogOut}>Create New Task</MenuItem>
                             <MenuItem onClick={handleLogOut}>Log Out</MenuItem>
                         </MenuList>
                     </Menu>
