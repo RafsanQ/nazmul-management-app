@@ -1,11 +1,11 @@
 import axios from "axios"
 
 
-export const login = async (email: string, password: string) => {
-    const response = await axios.post('http://localhost:3309/api/employee/login', {
-        "email": "fahim@faisal.com",
-        "password": "1234"
+export const login = async (email: string, password: string, userType: string) => {
+    const response = await axios.post('http://localhost:3309/api/' + userType + '/login', {
+        "email": email,
+        "password": password
     })
 
-    console.log(response)
+    return response.data;
 }
