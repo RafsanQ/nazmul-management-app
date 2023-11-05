@@ -12,7 +12,7 @@ import {
   TableContainer,
   useToast,
   Center,
-  Badge
+  Badge,
 } from "@chakra-ui/react";
 import ActionMenu from './ActionMenu'
 import axios, { AxiosResponse } from "axios";
