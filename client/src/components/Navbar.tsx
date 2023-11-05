@@ -31,6 +31,7 @@ function Navbar() {
         toast({
             title: "Logged Out Successfully",
             status: 'success',
+            position: 'top',
             duration: 3000,
             isClosable: true
         })

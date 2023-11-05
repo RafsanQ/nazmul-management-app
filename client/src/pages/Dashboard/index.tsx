@@ -66,6 +66,7 @@ function Index() {
         toast({
           title: "Error fetching data",
           status: "error",
+          position: 'top',
           description: error.message,
           duration: 3000,
           isClosable: true,
