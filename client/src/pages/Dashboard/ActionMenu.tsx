@@ -20,8 +20,8 @@ function ActionMenu(props: IMenu){
             <MenuList>
                 {props.userType == 'employee' && <MenuItem>Edit</MenuItem>}
                 {(props.userType == 'office-assistant' && props.status != "Completed" ) && <MenuItem>Update</MenuItem>}
-                {(props.userType == 'office-assistant' && props.status == 'PendingPayment')&& <MenuItem>Mark as Complete</MenuItem>}
-                {((props.userType == 'employee' && props.status == 'Requested') || (props.userType == 'office-assistant' && props.status != 'Requested')) && <MenuItem>Delete</MenuItem>}
+                {(props.userType == 'office-assistant' && props.status == 'PendingPayment') && <MenuItem>Mark as Complete</MenuItem>}
+                {((props.userType == 'employee' && props.status == 'Requested') || (props.userType == 'office-assistant' && props.status == 'Completed')) && <MenuItem>Delete</MenuItem>}
             </MenuList>
         </Menu>
     )

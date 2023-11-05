@@ -84,7 +84,7 @@ function Index() {
   }, []);
 
   return (
-    <Center marginY={10} marginX='10%' bg='gray.200' borderRadius='5px' paddingX='1%' paddingY='2%' display='flex' flexDir='column'>
+    <Center marginY={10} marginX='5%' bg='gray.200' borderRadius='5px' paddingX='1%' paddingY='2%' display='flex' flexDir='column'>
       <TableContainer>
         <Table variant="simple">
           <Thead>
@@ -95,6 +95,7 @@ function Index() {
               <Th>Due Amount</Th>
               <Th>Status</Th>
               { userType != 'employee' && <Th>Requested By</Th>}
+              <Th>Undertaken By</Th>
               <Th>Requested On</Th>
               <Th>Completed On</Th>
               <Th></Th>
@@ -109,8 +110,11 @@ function Index() {
                 <Td>{task.dueAmount}</Td>
                 <Td><Badge variant='solid' fontSize='0.8em' colorScheme= {task.status == 'Requested' ? 'purple' : task.status == 'Completed' ? 'green' : 'red' }>{task.status}</Badge></Td>
                 { userType != 'employee' && <Td>{task.employee.name}</Td>}
-                <Td>{task.createdAt}</Td>
-                <Td>{task.status == 'Completed' ? task.updatedAt : ''}</Td>
+                <Td>{ task.officeAssistant ? task.officeAssistant.name : ''}</Td>
+                <Td>{task.createdAt.substring(0, 10)}</Td>
+                
+                <Td>{task.status == 'Completed' ? task.updatedAt.substring(0, 10) : ''}</Td>
+                
                 <Td><ActionMenu userType={userType} status={task.status}/></Td>
               </Tr>
             ))}

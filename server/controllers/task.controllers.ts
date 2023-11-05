@@ -98,12 +98,26 @@ export const updateTaskByOfficeAssitant = async (req:Request, res: Response) => 
     const dueAmount: number = Number(req.body.dueAmount);
     const officeAssistantId: number = Number(req.body.officeAssistantId);
     try{
+        const task = await prisma.task.findUnique({
+            where: {
+                id: taskId
+            }
+        });
+
+        if(!task){
+            res.status(404).json("Error: Task does not exist");
+            return;
+        }
+
+        const initialAmount = dueAmount > task.initialAmount ? dueAmount : undefined;           // if you want to know why we use undefined here, refer to https://www.prisma.io/docs/concepts/components/prisma-client/null-and-undefined
+
         const newTask = await prisma.task.update({
             where: {
                 id: taskId
             },
             data: {
-                dueAmount: dueAmount,
+                initialAmount,
+                dueAmount,
                 status: dueAmount > 0 ? "Pending Payment" : "Completed",
                 officeAssistantId: officeAssistantId
             }
