@@ -81,7 +81,7 @@ function Index() {
   useEffect(() => {
     fetchTasks();
     console.log(dataToShow);
-  }, []);
+  }, [dataToShow]);
 
   return (
     <Center marginY={10} marginX='5%' bg='gray.200' borderRadius='5px' paddingX='1%' paddingY='2%' display='flex' flexDir='column'>
@@ -115,7 +115,7 @@ function Index() {
                 
                 <Td>{task.status == 'Completed' ? task.updatedAt.substring(0, 10) : ''}</Td>
                 
-                <Td><ActionMenu userType={userType} status={task.status} taskId={task.id}/></Td>
+                <Td><ActionMenu userType={userType} status={task.status} taskId={task.id} officeAssistantEmail={userEmail} token={token}/></Td>
               </Tr>
             ))}
           </Tbody>

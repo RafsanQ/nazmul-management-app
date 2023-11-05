@@ -9,7 +9,7 @@ import {
 } from "@chakra-ui/react";
 import FieldInput from "../../components/FieldInput";
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import axios, { AxiosResponse } from "axios";
 import type { RootState } from "../../store";
 import { updateTaskInstruction, getIdByEmail, getTaskInfo, updateDueAmount } from "./services";
@@ -24,7 +24,7 @@ function Index() {
     const toast = useToast();
     const navigate = useNavigate();
 
-    const [taskId, setSearchId] = useSearchParams();
+    const [taskId] = useSearchParams();
     const id = Number(taskId.get("task-id"));
 
     const handleInstructionChange = (e: React.ChangeEvent<HTMLInputElement>) =>
@@ -73,7 +73,6 @@ function Index() {
             });
             return;
         }
-
 
         try {
             if (userType === 'employee') {
