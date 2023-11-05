@@ -5,6 +5,17 @@ const prisma = new PrismaClient()
 export const getAllTasks = async (req:Request, res:Response) => {
     try{
         const tasks = await prisma.task.findMany({
+            orderBy: [
+                {
+                    status: 'desc'
+                },
+                {
+                    updatedAt: 'asc'
+                },
+                {
+                    createdAt: 'asc'
+                }
+            ],
             include: {
                 employee: true,
                 officeAssistant: true
@@ -51,6 +62,17 @@ export const getTasksByEmployee = async (req:Request, res: Response) => {
     const employeeEmail: string = String(req.params.email);
     try{
         const tasks = await prisma.task.findMany({
+            orderBy: [
+                {
+                    status: 'desc'
+                },
+                {
+                    updatedAt: 'asc'
+                },
+                {
+                    createdAt: 'asc'
+                }
+            ],
             where: {
                 employee: {
                     email: employeeEmail
@@ -71,7 +93,7 @@ export const getTasksByEmployee = async (req:Request, res: Response) => {
 }
 
 
-export const updateTaskOnCompletion = async (req:Request, res: Response) => {
+export const updateTaskByOfficeAssitant = async (req:Request, res: Response) => {
     const taskId: number = Number(req.params.id);
     const dueAmount: number = Number(req.body.dueAmount);
     const officeAssistantId: number = Number(req.body.officeAssistantId);
@@ -84,6 +106,28 @@ export const updateTaskOnCompletion = async (req:Request, res: Response) => {
                 dueAmount: dueAmount,
                 status: dueAmount > 0 ? "Pending Payment" : "Completed",
                 officeAssistantId: officeAssistantId
+            }
+        })
+
+        return res.status(201).json(newTask);
+
+    }catch(error){
+        res.status(500).json(error);
+        throw error;
+    }
+    
+}
+
+export const updateTaskByEmployeeOwner = async (req:Request, res: Response) => {
+    const taskId: number = Number(req.params.id);
+    const text: string = String(req.body.text);
+    try{
+        const newTask = await prisma.task.update({
+            where: {
+                id: taskId
+            },
+            data: {
+                text: text,
             }
         })
 

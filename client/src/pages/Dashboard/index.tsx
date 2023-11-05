@@ -39,6 +39,7 @@ function Index() {
   interface Idata {
     id: number;
     text: string;
+    initialAmount: number;
     dueAmount: number;
     status: string;
     employee: IEmployee;
@@ -88,12 +89,13 @@ function Index() {
         <Table variant="simple">
           <Thead>
             <Tr>
-              <Th>ID</Th>
+              <Th></Th>
               <Th>Instruction</Th>
+              <Th>Initial Amount</Th>
               <Th>Due Amount</Th>
               <Th>Status</Th>
-              { userType != 'employee' && <Th>Assigned By</Th>}
-              <Th>Assigned On</Th>
+              { userType != 'employee' && <Th>Requested By</Th>}
+              <Th>Requested On</Th>
               <Th>Completed On</Th>
               <Th></Th>
             </Tr>
@@ -103,11 +105,12 @@ function Index() {
               <Tr key={task.id}>
                 <Td>{task.id}</Td>
                 <Td>{task.text}</Td>
+                <Td>{task.initialAmount}</Td>
                 <Td>{task.dueAmount}</Td>
                 <Td><Badge variant='solid' fontSize='0.8em' colorScheme= {task.status == 'Requested' ? 'purple' : task.status == 'Completed' ? 'green' : 'red' }>{task.status}</Badge></Td>
                 { userType != 'employee' && <Td>{task.employee.name}</Td>}
                 <Td>{task.createdAt}</Td>
-                <Td>{task.updatedAt}</Td>
+                <Td>{task.status == 'Completed' ? task.updatedAt : ''}</Td>
                 <Td><ActionMenu userType={userType} status={task.status}/></Td>
               </Tr>
             ))}
