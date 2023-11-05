@@ -154,7 +154,7 @@ function Index() {
                 marginBottom="1em"
                 onClick={handleUpdateTask}
             >
-                Request
+                Update
             </Button>
         </Center>
     );
