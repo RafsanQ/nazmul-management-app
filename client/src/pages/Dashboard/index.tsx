@@ -115,7 +115,7 @@ function Index() {
                 
                 <Td>{task.status == 'Completed' ? task.updatedAt.substring(0, 10) : ''}</Td>
                 
-                <Td><ActionMenu userType={userType} status={task.status}/></Td>
+                <Td><ActionMenu userType={userType} status={task.status} taskId={task.id}/></Td>
               </Tr>
             ))}
           </Tbody>

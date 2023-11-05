@@ -3,31 +3,66 @@ import {
     Center,
     Text,
     useToast,
+    NumberInput,
+    NumberInputField,
+    FormLabel,
 } from "@chakra-ui/react";
 import FieldInput from "../../components/FieldInput";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import axios, { AxiosResponse } from "axios";
 import type { RootState } from "../../store";
-import { createNewTask, getIdByEmail } from "./services";
+import { updateTaskInstruction, getIdByEmail, getTaskInfo, updateDueAmount } from "./services";
 import { useSelector } from "react-redux";
+import { useSearchParams } from "react-router-dom";
+
+
 
 function Index() {
     const [instruction, setInstruction] = useState<string>("");
+    const [dueAmount, setDueAmount] = useState<number>(0);
     const toast = useToast();
     const navigate = useNavigate();
 
+    const [taskId, setSearchId] = useSearchParams();
+    const id = Number(taskId.get("task-id"));
+
     const handleInstructionChange = (e: React.ChangeEvent<HTMLInputElement>) =>
         setInstruction(e.target.value);
+
+    const handleDueAmountChange = (e: React.ChangeEvent<HTMLInputElement>) =>
+        setDueAmount(Number(e.target.value));
+
     const userEmail: string = useSelector((state: RootState) => state.email);
     const userType: string = useSelector((state: RootState) => state.userType);
     const token: string = useSelector((state: RootState) => state.token);
 
-    if(userEmail == '' || token == ''){
-        navigate('/login');
+    const fetchTaskInfoFromApi = async () => {
+        try {
+            const response: AxiosResponse = await getTaskInfo(id, token);
+            setInstruction(response.data.text);
+            setDueAmount(response.data.dueAmount);
+        } catch (error) {
+            if (axios.isAxiosError(error) && error.message) {
+                toast({
+                    title: "Error fetching data",
+                    status: "error",
+                    position: 'top',
+                    description: error.message,
+                    duration: 3000,
+                    isClosable: true,
+                });
+            } else {
+                throw error;
+            }
+        }
     }
 
-    const handleCreateNewTask = async () => {
+    useEffect(() => {
+        fetchTaskInfoFromApi();
+    }, []);
+
+    const handleUpdateTask = async () => {
         if (instruction === "") {
             toast({
                 title: "Please enter a valid instruction",
@@ -39,21 +74,35 @@ function Index() {
             return;
         }
 
+
         try {
+            if (userType === 'employee') {
+                await updateTaskInstruction(id, token, instruction);
+                toast({
+                    title: "Task updated successfully",
+                    position: 'top',
+                    status: "success",
+                    duration: 3000,
+                    isClosable: true,
+                });
+                navigate('/');
+                return;
+            }
             const employeeId: number = await getIdByEmail(userEmail, userType, token);
-            await createNewTask(employeeId, token, instruction);
+            await updateDueAmount(id, employeeId, token, dueAmount);
             toast({
-                title: "Task posted successfully",
+                title: "Task updated successfully",
+                position: 'top',
                 status: "success",
                 duration: 3000,
-                isClosable: true, 
+                isClosable: true,
             });
             navigate('/');
-            
+            return;
+
         } catch (error) {
             if (axios.isAxiosError(error) && error.response) {
                 const errorMessage = error.response.data;
-                console.log(error.response);
                 toast({
                     title: errorMessage,
                     status: "error",
@@ -85,21 +134,26 @@ function Index() {
                 fontSize="3xl"
                 marginY={5}
             >
-                Create a New Task
+                {userType == 'employee' ? 'Edit' : 'Update'} Task
             </Text>
             <FieldInput
-                text="Instruction"
+                text="instruction"
                 name="instruction"
                 type="text"
+                readonly={userType == 'employee' ? false : true}
                 value={instruction}
                 onChange={handleInstructionChange}
             />
+            <FormLabel marginTop="1em">Due Amount</FormLabel>
+            <NumberInput bg='white' borderRadius='5px' defaultValue={0} value={dueAmount} >
+                <NumberInputField onChange={handleDueAmountChange} readOnly={userType == 'office-assistant' ? false : true}/>
+            </NumberInput>
 
             <Button
                 colorScheme="blue"
                 marginTop="2em"
                 marginBottom="1em"
-                onClick={handleCreateNewTask}
+                onClick={handleUpdateTask}
             >
                 Request
             </Button>
