@@ -5,48 +5,53 @@ import DashboardPage from "../pages/Dashboard"
 import CreateNewTask from "../pages/CreateNewTask";
 import { useSelector } from "react-redux";
 import type { RootState } from "../store";
+import EditTask from "../pages/EditTask";
 
 
 interface RedirectInterface{
-  targetLink: JSX.Element,
-  redirectLink: JSX.Element
+  targetElement: JSX.Element,
+  redirectElement: JSX.Element
 }
 
 const RouteAuthGuard = (props: RedirectInterface) => {
   const userEmail: string = useSelector((state: RootState) => state.email);
   const token: string = useSelector((state: RootState) => state.token);
   if(userEmail == '' || token == ''){
-    return props.redirectLink;
+    return props.redirectElement;
   }
-  return props.targetLink;
+  return props.targetElement;
 }
 
 const RouteGuardForLoginPage = (props: RedirectInterface) => {
   const userEmail: string = useSelector((state: RootState) => state.email);
   const token: string = useSelector((state: RootState) => state.token);
   if(userEmail != '' && token != ''){
-    return props.redirectLink;
+    return props.redirectElement;
   }
-  return props.targetLink;
+  return props.targetElement;
 }
 
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <RouteAuthGuard targetLink={<DashboardPage/>} redirectLink={<LoginPage/>}/>
+    element: <RouteAuthGuard targetElement={<DashboardPage/>} redirectElement={<LoginPage/>} />
   },
   {
     path: "/login",
-    element: <RouteGuardForLoginPage targetLink={<LoginPage/>} redirectLink={<DashboardPage/>} />
+    element: <RouteGuardForLoginPage targetElement={<LoginPage/>} redirectElement={<DashboardPage/>} />
   },
   {
     path: "/register",
-    element: <RouteGuardForLoginPage targetLink={<RegisterPage/>} redirectLink={<DashboardPage/>} />
+    element: <RouteGuardForLoginPage targetElement={<RegisterPage/>} redirectElement={<DashboardPage/>} />
   },
   {
     path: "/new-task",
-    element: <RouteAuthGuard targetLink={<CreateNewTask/>} redirectLink={<LoginPage/>}/>
+    element: <RouteAuthGuard targetElement={<CreateNewTask/>} redirectElement={<LoginPage/>}/>
+  },
+  {
+    path: "/edit-task/",
+    element: <RouteAuthGuard targetElement={<EditTask/>} redirectElement={<LoginPage/>} />
   }
   
 ]);

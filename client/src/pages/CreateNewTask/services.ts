@@ -12,7 +12,6 @@ export const createNewTask = async (id: number, token: string, text: string) => 
         },
     }
     )
-    console.log(response);
     return response;
 }
 

@@ -17,3 +17,23 @@ export const getTasksBySpecificEmployeeApi = async (email: string, token: string
     });
     return response;
 }
+
+export const getIdByEmail = async (email: string, userType: string, token: string) => {
+    const response = await axios.get('http://localhost:3309/api/' + userType + '/by-email/' + email, {
+        headers: {
+            Authorization: 'Bearer ' + token
+        }
+    })
+
+    return response.data.id;
+}
+
+export const deleteTask = async (taskId: number, token: string) => {
+    const response = await axios.delete('http://localhost:3309/api/task/' + taskId, {
+        headers: {
+            Authorization: 'Bearer ' + token
+        }
+    })
+
+    return response;
+}

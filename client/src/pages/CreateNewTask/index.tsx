@@ -31,6 +31,7 @@ function Index() {
         if (instruction === "") {
             toast({
                 title: "Please enter a valid instruction",
+                position: 'top',
                 status: "error",
                 duration: 3000,
                 isClosable: true,
@@ -40,7 +41,6 @@ function Index() {
 
         try {
             const employeeId: number = await getIdByEmail(userEmail, userType, token);
-            console.log(token);
             await createNewTask(employeeId, token, instruction);
             toast({
                 title: "Task posted successfully",
