@@ -41,6 +41,7 @@ function Index() {
         if(employeeData.email === '' || employeeData.password === '' || employeeData.name === '' || employeeData.phone === '') {
             toast({
                 title: "Please fill out all of the required fields",
+                position: 'top',
                 status: 'error',
                 duration: 3000,
                 isClosable: true
@@ -51,6 +52,7 @@ function Index() {
         if(employeeData.password !== employeeData.repeatPassword) {
             toast({
                 title: "Passwords do not match",
+                position: 'top',
                 status: 'error',
                 duration: 3000,
                 isClosable: true
@@ -63,6 +65,7 @@ function Index() {
 
             toast({
                 title: "Employee Registered Successfully",
+                position: 'top',
                 status: 'success',
                 duration: 3000,
                 isClosable: true
@@ -75,6 +78,7 @@ function Index() {
                 const errorMessage = error.response.data;
                 toast({
                     title: errorMessage,
+                    position: 'top',
                     status: 'error',
                     duration: 3000,
                     isClosable: true

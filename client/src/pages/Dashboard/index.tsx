@@ -12,7 +12,9 @@ import {
   TableContainer,
   useToast,
   Center,
+  Badge,
 } from "@chakra-ui/react";
+import ActionMenu from './ActionMenu'
 import axios, { AxiosResponse } from "axios";
 import { useEffect, useState } from "react";
 
@@ -64,6 +66,7 @@ function Index() {
         toast({
           title: "Error fetching data",
           status: "error",
+          position: 'top',
           description: error.message,
           duration: 3000,
           isClosable: true,
@@ -89,7 +92,7 @@ function Index() {
               <Th>Instruction</Th>
               <Th>Due Amount</Th>
               <Th>Status</Th>
-              <Th>Assigned By</Th>
+              { userType != 'employee' && <Th>Assigned By</Th>}
               <Th>Assigned On</Th>
               <Th>Completed On</Th>
               <Th></Th>
@@ -101,11 +104,11 @@ function Index() {
                 <Td>{task.id}</Td>
                 <Td>{task.text}</Td>
                 <Td>{task.dueAmount}</Td>
-                <Td>{task.status}</Td>
-                <Td>{task.employee.name}</Td>
+                <Td><Badge variant='solid' fontSize='0.8em' colorScheme= {task.status == 'Requested' ? 'purple' : task.status == 'Completed' ? 'green' : 'red' }>{task.status}</Badge></Td>
+                { userType != 'employee' && <Td>{task.employee.name}</Td>}
                 <Td>{task.createdAt}</Td>
                 <Td>{task.updatedAt}</Td>
-                <Td>Actions</Td>
+                <Td><ActionMenu userType={userType} status={task.status}/></Td>
               </Tr>
             ))}
           </Tbody>

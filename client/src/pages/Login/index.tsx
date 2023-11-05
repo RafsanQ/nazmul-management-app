@@ -64,6 +64,7 @@ function Index() {
 
             toast({
                 title: "Signed in successfully",
+                position: 'top',
                 status: 'success',
                 duration: 3000,
                 isClosable: true
@@ -85,6 +86,7 @@ function Index() {
                 const errorMessage = error.response.data;
                 toast({
                     title: errorMessage,
+                    position: 'top',
                     status: 'error',
                     duration: 3000,
                     isClosable: true
