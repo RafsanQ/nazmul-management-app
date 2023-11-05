@@ -150,6 +150,22 @@ export const updateTaskByEmployeeOwner = async (req:Request, res: Response) => {
     }catch(error){
         res.status(500).json(error);
         throw error;
-    }
-    
+    }  
+}
+
+export const deleteTask = async (req:Request, res: Response) => {
+    const taskId: number = Number(req.params.id);
+    try{
+        const deletedTask = await prisma.task.delete({
+            where: {
+                id: taskId
+            },
+        })
+
+        return res.status(201).json(deletedTask);
+
+    }catch(error){
+        res.status(500).json(error);
+        throw error;
+    }  
 }
