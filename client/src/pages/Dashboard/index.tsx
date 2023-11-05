@@ -117,7 +117,7 @@ function Index() {
                 
                 <Td>
                   {
-                    (userType == 'office-assistant' && (task.status == 'Requested' || task.officeAssistant?.email == userEmail)) && 
+                    (userType == 'employee' || (userType == 'office-assistant' && (task.status == 'Requested' || task.officeAssistant?.email == userEmail))) && 
                     <ActionMenu userType={userType} status={task.status} taskId={task.id} officeAssistantEmail={userEmail} token={token}/>
                   }
                 </Td>
