@@ -14,6 +14,7 @@ import {
   Center,
   Badge
 } from "@chakra-ui/react";
+import ActionMenu from './ActionMenu'
 import axios, { AxiosResponse } from "axios";
 import { useEffect, useState } from "react";
 
@@ -106,7 +107,7 @@ function Index() {
                 { userType != 'employee' && <Td>{task.employee.name}</Td>}
                 <Td>{task.createdAt}</Td>
                 <Td>{task.updatedAt}</Td>
-                <Td>Actions</Td>
+                <Td><ActionMenu userType={userType} status={task.status}/></Td>
               </Tr>
             ))}
           </Tbody>
