@@ -115,7 +115,12 @@ function Index() {
                 
                 <Td>{task.status == 'Completed' ? task.updatedAt.substring(0, 10) : ''}</Td>
                 
-                <Td><ActionMenu userType={userType} status={task.status} taskId={task.id} officeAssistantEmail={userEmail} token={token}/></Td>
+                <Td>
+                  {
+                    (userType == 'office-assistant' && (task.status == 'Requested' || task.officeAssistant?.email == userEmail)) && 
+                    <ActionMenu userType={userType} status={task.status} taskId={task.id} officeAssistantEmail={userEmail} token={token}/>
+                  }
+                </Td>
               </Tr>
             ))}
           </Tbody>
