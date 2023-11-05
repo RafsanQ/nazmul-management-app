@@ -49,7 +49,7 @@ function Index() {
                     status: "error",
                     position: 'top',
                     description: error.message,
-                    duration: 3000,
+                    duration: 2000,
                     isClosable: true,
                 });
             } else {
@@ -68,7 +68,7 @@ function Index() {
                 title: "Please enter a valid instruction",
                 position: 'top',
                 status: "error",
-                duration: 3000,
+                duration: 2000,
                 isClosable: true,
             });
             return;
@@ -81,7 +81,7 @@ function Index() {
                     title: "Task updated successfully",
                     position: 'top',
                     status: "success",
-                    duration: 3000,
+                    duration: 2000,
                     isClosable: true,
                 });
                 navigate('/');
@@ -93,7 +93,7 @@ function Index() {
                 title: "Task updated successfully",
                 position: 'top',
                 status: "success",
-                duration: 3000,
+                duration: 2000,
                 isClosable: true,
             });
             navigate('/');
@@ -105,7 +105,7 @@ function Index() {
                 toast({
                     title: errorMessage,
                     status: "error",
-                    duration: 3000,
+                    duration: 2000,
                     isClosable: true,
                 });
             } else {

@@ -27,3 +27,13 @@ export const getIdByEmail = async (email: string, userType: string, token: strin
 
     return response.data.id;
 }
+
+export const deleteTask = async (taskId: number, token: string) => {
+    const response = await axios.delete('http://localhost:3309/api/task/' + taskId, {
+        headers: {
+            Authorization: 'Bearer ' + token
+        }
+    })
+
+    return response;
+}

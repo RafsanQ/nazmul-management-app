@@ -9,7 +9,7 @@ import {
 import { useNavigate } from 'react-router-dom';
 import { updateDueAmount } from '../EditTask/services';
 import axios from 'axios';
-import { getIdByEmail } from './services';
+import { deleteTask, getIdByEmail } from './services';
 
 interface IMenu{
     taskId: number;
@@ -27,16 +27,15 @@ function ActionMenu(props: IMenu){
         navigate('/edit-task?task-id=' + props.taskId);
     }
 
-    const hanldeCompletion = async () => {
+    const handleDeleteTask =async () => {
         try {
-            const assistantId = await getIdByEmail(props.officeAssistantEmail, props.userType, props.token);
-            await updateDueAmount(props.taskId, assistantId, props.token, 0);
+            await deleteTask(props.taskId, props.token)
             navigate('/');
             toast({
-                title: "Task Completed successfully",
+                title: "Task Deleted successfully",
                 position: 'top',
-                status: "success",
-                duration: 3000,
+                status: "warning",
+                duration: 2000,
                 isClosable: true,
             });
             
@@ -47,7 +46,34 @@ function ActionMenu(props: IMenu){
                     status: "error",
                     position: 'top',
                     description: error.message,
-                    duration: 3000,
+                    duration: 2000,
+                    isClosable: true,
+                });
+            }
+        }
+    }
+
+    const hanldeCompletion = async () => {
+        try {
+            const assistantId = await getIdByEmail(props.officeAssistantEmail, props.userType, props.token);
+            await updateDueAmount(props.taskId, assistantId, props.token, 0);
+            navigate('/');
+            toast({
+                title: "Task Completed successfully",
+                position: 'top',
+                status: "success",
+                duration: 2000,
+                isClosable: true,
+            });
+            
+        } catch (error) {
+            if (axios.isAxiosError(error) && error.message) {
+                toast({
+                    title: "Error fetching data",
+                    status: "error",
+                    position: 'top',
+                    description: error.message,
+                    duration: 2000,
                     isClosable: true,
                 });
             }
@@ -63,7 +89,7 @@ function ActionMenu(props: IMenu){
                 {props.userType == 'employee' && <MenuItem onClick={handleEditPageNavigation}>Edit</MenuItem>}
                 {(props.userType == 'office-assistant' && props.status != "Completed" ) && <MenuItem onClick={handleEditPageNavigation}>Update</MenuItem>}
                 {(props.userType == 'office-assistant' && props.status == 'Pending Payment') && <MenuItem onClick={hanldeCompletion}>Mark as Complete</MenuItem>}
-                {((props.userType == 'employee' && props.status != 'Pending Payment') || (props.userType == 'office-assistant' && props.status == 'Completed')) && <MenuItem>Delete</MenuItem>}
+                {((props.userType == 'employee' && props.status != 'Pending Payment') || (props.userType == 'office-assistant' && props.status == 'Completed')) && <MenuItem onClick={handleDeleteTask}>Delete</MenuItem>}
             </MenuList>
         </Menu>
     )
